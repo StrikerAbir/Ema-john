@@ -25,6 +25,9 @@ async function run(){
         const productCollection = client.db('emaJohn').collection('products');
 
         app.get('/products', async (req, res) => {
+            const currentPage = req.query.currentPage;
+            const perPage = req.query.perPage;
+            console.log(currentPage,perPage);
             const query = {};
             const cursor = productCollection.find(query);
             const products = await cursor.toArray();

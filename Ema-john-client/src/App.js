@@ -28,9 +28,9 @@ function App() {
         },
         {
           path: "/shop",
-          loader: () => {
-            return fetch("http://localhost:1000/products");
-          },
+          // loader: () => {
+          //   return fetch("http://localhost:1000/products");
+          // },
           element: <Shop></Shop>,
         },
         {

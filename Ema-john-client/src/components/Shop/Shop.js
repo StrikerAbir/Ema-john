@@ -17,26 +17,28 @@ import "./Shop.css";
 */
 
 const Shop = () => {
-  // const [products, setProducts] = useState([])
-  const { products, count } = useLoaderData();
+  // const { products, count } = useLoaderData();
 
   // console.log(products);
+  const [products, setProducts] = useState([])
+  const [count, setCount] = useState(0);
   const [cart, setCart] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [perPage, setPerPage] = useState(10);
 
   const pages = Math.ceil(count / perPage);
 
-  // useEffect(() => {
-  //     console.log('before fetch');
-  //     fetch('products.json')
-  //         .then(res => res.json())
-  //         .then(data => {
-  //             setProducts(data);
-  //             // console.log('fetch finished');
-  //         });
+  useEffect(() => {
+    const url = `http://localhost:1000/products?currentPage=${currentPage}&perPage=${perPage}`;
+      fetch(url)
+          .then(res => res.json())
+          .then(data => {
+              setProducts(data.products);
+              setCount(data.count);
+              // console.log('fetch finished');
+          });
 
-  // }, [])
+  }, [ perPage,currentPage])
 
   useEffect(() => {
     // console.log('local storage');
@@ -98,12 +100,18 @@ const Shop = () => {
         </Cart>
       </div>
       <div className="pagination">
-        <p>Currently selected page : {currentPage}</p>
+        <p>Currently selected page : {currentPage} per page items : { perPage}</p>
         {[...Array(pages).keys()].map((number) => (
           <button onClick={() => setCurrentPage(number)} key={number} className={currentPage===number && 'selected'}>
             {number}
           </button>
         ))}
+        <select onChange={event=>setPerPage(event.target.value)}>
+          <option value='5'>5</option>
+          <option value='10' selected>10</option>
+          <option value='15'>15</option>
+          <option value='20'>20</option>
+        </select>
       </div>
     </div>
   );
