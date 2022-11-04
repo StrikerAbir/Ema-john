@@ -41,11 +41,11 @@ const Shop = () => {
   }, [ perPage,currentPage])
 
   useEffect(() => {
-    // console.log('local storage');
     const storedCart = getStoredCart();
-    // console.log(storedCart);
     const savedCart = [];
+
     const ids = Object.keys(storedCart);
+    console.log(ids);
     fetch("http://localhost:1000/productsByIds", {
       method: "POST",
       headers: {
@@ -55,19 +55,16 @@ const Shop = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-
         for (const id in storedCart) {
           const addedProduct = data.find((product) => product._id === id);
-          // console.log('storage finished');
           if (addedProduct) {
-            // console.log(addedProduct);
             const quantity = storedCart[id];
             addedProduct.quantity = quantity;
             savedCart.push(addedProduct);
           }
         }
+        setCart(savedCart);
       });
-    setCart(savedCart);
   }, [products]);
 
   const handleAddToCart = (selectedProduct) => {
