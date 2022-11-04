@@ -8,9 +8,19 @@ import {
 import Cart from "../Cart/Cart";
 import Product from "../Product/Product";
 import "./Shop.css";
+
+/*
+  count,
+  per page,
+  current page
+*/
+
 const Shop = () => {
   // const [products, setProducts] = useState([])
-  const products = useLoaderData();
+  const { products, count } = useLoaderData();
+  
+  const perPage = 10;
+  
   // console.log(products);
   const [cart, setCart] = useState([]);
 
@@ -31,7 +41,7 @@ const Shop = () => {
     // console.log(storedCart);
     const savedCart = [];
     for (const id in storedCart) {
-      const addedProduct = products.find((product) => product.id === id);
+      const addedProduct = products.find((product) => product._id === id);
       // console.log('storage finished');
       if (addedProduct) {
         // console.log(addedProduct);
@@ -45,18 +55,18 @@ const Shop = () => {
 
   const handleAddToCart = (selectedProduct) => {
     let newCart = [];
-    const exist = cart.find((product) => product.id === selectedProduct.id);
+    const exist = cart.find((product) => product._id === selectedProduct._id);
     if (!exist) {
       selectedProduct.quantity = 1;
       newCart = [...cart, selectedProduct];
     } else {
-      const rest = cart.filter((product) => product.id !== selectedProduct.id);
+      const rest = cart.filter((product) => product._id !== selectedProduct._id);
       exist.quantity = exist.quantity + 1;
       newCart = [...rest, exist];
     }
 
     setCart(newCart);
-    addToDb(selectedProduct.id);
+    addToDb(selectedProduct._id);
   };
 
   const clearCart = () => {
@@ -69,7 +79,7 @@ const Shop = () => {
       <div className="products-container">
         {products.map((product) => (
           <Product
-            key={product.id}
+            key={product._id}
             product={product}
             handleAddToCart={handleAddToCart}
           ></Product>
