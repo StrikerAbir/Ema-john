@@ -22,14 +22,14 @@ function App() {
         {
           path: "/",
           loader: () => {
-            return fetch("products.json");
+            return fetch("http://localhost:1000/products");
           },
           element: <Shop></Shop>,
         },
         {
           path: "/shop",
           loader: () => {
-            return fetch("products.json");
+            return fetch("http://localhost:1000/products");
           },
           element: <Shop></Shop>,
         },
