@@ -103,7 +103,7 @@ const Shop = () => {
         <p>Currently selected page : {currentPage} per page items : { perPage}</p>
         {[...Array(pages).keys()].map((number) => (
           <button onClick={() => setCurrentPage(number)} key={number} className={currentPage===number && 'selected'}>
-            {number}
+            {number+1}
           </button>
         ))}
         <select onChange={event=>setPerPage(event.target.value)}>
