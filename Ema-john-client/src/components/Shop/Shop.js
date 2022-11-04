@@ -45,16 +45,28 @@ const Shop = () => {
     const storedCart = getStoredCart();
     // console.log(storedCart);
     const savedCart = [];
-    for (const id in storedCart) {
-      const addedProduct = products.find((product) => product._id === id);
-      // console.log('storage finished');
-      if (addedProduct) {
-        // console.log(addedProduct);
-        const quantity = storedCart[id];
-        addedProduct.quantity = quantity;
-        savedCart.push(addedProduct);
-      }
-    }
+    const ids = Object.keys(storedCart);
+    fetch("http://localhost:1000/productsByIds", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(ids),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+
+        for (const id in storedCart) {
+          const addedProduct = data.find((product) => product._id === id);
+          // console.log('storage finished');
+          if (addedProduct) {
+            // console.log(addedProduct);
+            const quantity = storedCart[id];
+            addedProduct.quantity = quantity;
+            savedCart.push(addedProduct);
+          }
+        }
+      });
     setCart(savedCart);
   }, [products]);
 
