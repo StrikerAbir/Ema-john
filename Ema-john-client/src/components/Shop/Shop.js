@@ -12,17 +12,20 @@ import "./Shop.css";
 /*
   count,
   per page,
+  pages : count /perpage
   current page
 */
 
 const Shop = () => {
   // const [products, setProducts] = useState([])
   const { products, count } = useLoaderData();
-  
-  const perPage = 10;
-  
+
   // console.log(products);
   const [cart, setCart] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [perPage, setPerPage] = useState(10);
+
+  const pages = Math.ceil(count / perPage);
 
   // useEffect(() => {
   //     console.log('before fetch');
@@ -60,7 +63,9 @@ const Shop = () => {
       selectedProduct.quantity = 1;
       newCart = [...cart, selectedProduct];
     } else {
-      const rest = cart.filter((product) => product._id !== selectedProduct._id);
+      const rest = cart.filter(
+        (product) => product._id !== selectedProduct._id
+      );
       exist.quantity = exist.quantity + 1;
       newCart = [...rest, exist];
     }
@@ -91,6 +96,14 @@ const Shop = () => {
             <button>Review Order</button>
           </Link>
         </Cart>
+      </div>
+      <div className="pagination">
+        <p>Currently selected page : {currentPage}</p>
+        {[...Array(pages).keys()].map((number) => (
+          <button onClick={() => setCurrentPage(number)} key={number} className={currentPage===number && 'selected'}>
+            {number}
+          </button>
+        ))}
       </div>
     </div>
   );
